@@ -1,0 +1,175 @@
+$boxColor: #0ff7;
+$rotateSpeed: 30s;
+$bounceSpeed: 2s;
+
+body {
+  background-color: #000;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 75px;
+  perspective: 10em;
+  perspective-origin: 50% calc(50% - 3em);
+}
+
+.scene {
+  position: relative;
+  transform-style: preserve-3d;
+  animation: sceneRotate $rotateSpeed infinite linear;
+
+  @keyframes sceneRotate {
+    to {
+      transform: rotateY(360deg);
+    }
+  }
+}
+
+.ball {
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  background-color: lightblue;
+  background-image: radial-gradient(circle at top, lightblue, #000);
+  position: absolute;
+  /*
+  Position elements relative to origin.
+   */
+  left: -.5em;
+  bottom: 1em;
+  /*
+  Reverse animation of screen to make sure ball always faces viewport.
+   */
+  animation: ballBounce $bounceSpeed infinite ease-out,
+  sceneRotate $rotateSpeed infinite linear reverse;
+
+  @keyframes ballBounce {
+    0%, 100% {
+      bottom: 0.5em;
+      opacity: 1;
+    }
+    50% {
+      bottom: 3em;
+      opacity: 0.5;
+      animation-timing-function: ease-in;
+    }
+  }
+}
+
+.ballShadow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#0007, #0000 50%);
+  animation: ballShadow $bounceSpeed infinite ease-out;
+
+  @keyframes ballShadow {
+    0%, 8%, 93.5%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(2);
+      animation-timing-function: ease-in;
+    }
+  }
+}
+
+.box {
+  width: 2em;
+  height: 2em;
+  transform-style: preserve-3d;
+  position: absolute;
+  /*
+  Position elements relative to origin.
+   */
+  bottom: -1em;
+  left: -1em;
+  animation: boxHeight $bounceSpeed infinite linear;
+
+  @keyframes boxHeight {
+    0%, 100% {
+      height: 1.5em;
+    }
+    8%, 93.5% {
+      height: 2em;
+    }
+  }
+
+  .left, .right, .front, .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: $boxColor;
+    box-shadow: 0 0 0.5em #000a inset;
+  }
+
+  .front {
+    /*
+    The box is 2em so this moves the front half a boxsize towards the viewport.
+     */
+    transform: translateZ(1em);
+  }
+
+  .right {
+    /*
+    Rotate element 90 degrees and move it half a boxsize towards the viewport.
+    The viewport relative to the element is now on the right side,
+     thus the element moves right.
+     */
+    transform: rotateY(90deg) translateZ(1em);
+  }
+
+  .back {
+    transform: rotateY(180deg) translateZ(1em);
+  }
+
+  /* Same as right but 180deg instead of 90 */
+  .left {
+    transform: rotateY(270deg) translateZ(1em);
+  }
+
+  .top {
+    /*
+    Don't want the top to inherit the same properties as .front, .back, .left, .right because those
+    will change during animating, the top won't.
+     */
+    position: absolute;
+    width: 2em;
+    height: 2em;
+    background: $boxColor;
+    transform: translateY(-50%) rotateX(90deg);
+    box-shadow: 0 0 0.5em #000a inset;
+  }
+
+  .bottom {
+    position: absolute;
+    bottom: 0;
+    width: 2em;
+    height: 2em;
+    background: #0007;
+    transform: translateY(50%) rotateX(90deg);
+    box-shadow: 0 0 0.5em #000;
+  }
+}
+
+.floor {
+  width: 15em;
+  height: 15em;
+  /*
+  repeating-conic-gradient here generates a diagonal pattern where each
+  opposite diagonal corner has the same color.
+  */
+  background-image: radial-gradient(#0000, #000 75%),
+  repeating-conic-gradient(
+                  from 45deg,
+                  #111 0deg 90deg,
+                  #222 90deg 180deg);
+  background-size: 100%, 1em 1em;
+  position: absolute;
+  top: 1em;
+  /*
+  Place the center of the floor on the origin.
+   */
+  transform: translate(-50%, -50%) rotateX(90deg); /* Rotate in such a way that it is now perpendicular to viewport. */
+}
