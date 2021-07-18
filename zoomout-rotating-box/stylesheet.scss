@@ -1,0 +1,74 @@
+$boxColor: #222;
+$rotateSpeed: 5s;
+
+body {
+  background-color: #000;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 10em;
+  font-size: 50vh;
+  perspective-origin: center;
+}
+
+.scene {
+  position: relative;
+  transform-style: preserve-3d;
+  animation: sceneRotate $rotateSpeed infinite linear;
+
+  @keyframes sceneRotate {
+    10%, 20% {
+      transform: translateZ(-3em);
+    }
+    30%, 40% {
+      transform: translateZ(-3em) rotateY(90deg);
+    }
+    50%, 100% {
+      transform: translateZ(0) rotateY(90deg);
+    }
+  }
+}
+
+.box {
+  color: white;
+  height: 2em;
+  width: 2em;
+  position: absolute;
+  transform-style: preserve-3d;
+  bottom: -1em;
+  left: -1em;
+
+  .front, .left, .right, .back, .top, .bottom {
+    position: absolute;
+    background: $boxColor;
+    height: 100%;
+    width: 100%;
+    box-shadow: 0 0 0.5em #000a inset;
+  }
+
+  .front {
+    transform: translateZ(1em);
+  }
+
+  .left {
+    transform: rotateY(90deg) translateZ(1em);
+  }
+
+  .back {
+    transform: rotateY(180deg) translateZ(1em);
+  }
+
+  .right {
+    transform: rotateY(270deg) translateZ(1em);
+  }
+
+  .top {
+    transform: translateY(-50%) rotateX(90deg);
+  }
+
+  .bottom {
+    transform: translateY(50%) rotateX(90deg);
+  }
+}
