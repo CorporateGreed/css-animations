@@ -1,0 +1,130 @@
+:root {
+  --topWidth: 20%;
+}
+
+body {
+  background-color: rgba(232, 216, 122, 0.5);
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  perspective: 20em;
+  perspective-origin: 50% calc(50% - 4em);
+}
+
+.scene {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(90deg) rotateZ(45deg) translateZ(-4em);
+}
+
+.cube {
+  position: absolute;
+  width: 5em;
+  height: 5em;
+  top: -2.5em;
+  left: -2.5em;
+  transform-style: preserve-3d;
+  animation: moveAndShrink 5s infinite ease-in;
+}
+@keyframes moveAndShrink {
+  50% {
+    transform: translateZ(5em) scaleX(0.2) scaleY(0.2);
+  }
+  75% {
+    transform: translateZ(2em) scaleX(0.2) scaleY(0.2);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: translateZ(0);
+    animation-timing-function: ease-in;
+  }
+}
+.cube > .top {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform: translateZ(1em);
+}
+.cube > .top .left, .cube > .top .right, .cube > .top .bottom-right, .cube > .top .bottom-left {
+  position: absolute;
+  background-color: orangered;
+}
+.cube > .top .left {
+  width: 100%;
+  height: var(--topWidth);
+  top: 0;
+}
+.cube > .top .right {
+  width: var(--topWidth);
+  height: 100%;
+  right: 0;
+}
+.cube > .top .bottom-left {
+  width: 100%;
+  height: var(--topWidth);
+  bottom: 0;
+}
+.cube > .top .bottom-right {
+  width: var(--topWidth);
+  height: 100%;
+  left: 0;
+}
+.cube > .bottom-left {
+  position: absolute;
+  background-color: brown;
+  width: 100%;
+  height: 20%;
+  bottom: -0.5em;
+  transform: rotateX(90deg) translateY(0.5em);
+}
+.cube > .bottom-right {
+  position: absolute;
+  background-color: #d98f6f;
+  width: 20%;
+  height: 100%;
+  right: -0.5em;
+  transform: rotateY(90deg) translatex(-0.5em);
+}
+.cube .inner-left {
+  position: absolute;
+  background-color: #d98f6f;
+  width: 20%;
+  height: 60%;
+  top: 1em;
+  left: 0.5em;
+  transform: rotateY(90deg) translateX(-0.5em);
+}
+.cube .inner-right {
+  position: absolute;
+  background-color: brown;
+  width: 60%;
+  height: 20%;
+  top: 0.5em;
+  left: 1em;
+  transform: rotateX(90deg) translateY(0.5em);
+}
+
+.cube.reverse {
+  animation: moveAndShrinkReverse 5s infinite ease-in;
+}
+@keyframes moveAndShrinkReverse {
+  0% {
+    transform: translateZ(5em) scaleX(0.2) scaleY(0.2);
+  }
+  25% {
+    transform: translateZ(2em) scaleX(0.2) scaleY(0.2);
+    animation-timing-function: ease-out;
+  }
+  50% {
+    transform: translateZ(0);
+    animation-timing-function: ease-in;
+  }
+  100% {
+    transform: translateZ(5em) scaleX(0.2) scaleY(0.2);
+  }
+}
+
+/*# sourceMappingURL=stylesheet.css.map */
